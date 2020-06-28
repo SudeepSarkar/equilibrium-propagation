@@ -281,18 +281,27 @@ class RestrictedHopfield(EnergyBasedModel):
         Update the energy computed as the Hopfield Energy.
 
         """
+        # self.E = 0
+        #
+        # for i, layer in enumerate(self.W):
+        #     r_pre = self.phi[i](self.u[i])
+        #     r_post = self.phi[i + 1](self.u[i + 1])
+        #
+        #     if i == 0:
+        #         self.E += 0.5 * torch.einsum('ij,ij->i', self.u[i], self.u[i])
+        #
+        #     self.E += 0.5 * torch.einsum('ij,ij->i', self.u[i + 1], self.u[i + 1])
+        #     self.E -= 0.5 * torch.einsum('bi,ji,bj->b', r_pre, layer.weight, r_post)
+        #     self.E -= 0.5 * torch.einsum('bi,ij,bj->b', r_post, layer.weight, r_pre)
+        #     self.E -= torch.einsum('i,ji->j', layer.bias, r_post)
+        #
         self.E = 0
-
-        for i, layer in enumerate(self.W):
+        for i in range(self.n_layers - 1):
             r_pre = self.phi[i](self.u[i])
             r_post = self.phi[i + 1](self.u[i + 1])
-
-            if i == 0:
-                self.E += 0.5 * torch.einsum('ij,ij->i', self.u[i], self.u[i])
-
+            pred = self.W[i](r_pre)
             self.E += 0.5 * torch.einsum('ij,ij->i', self.u[i + 1], self.u[i + 1])
-            self.E -= 0.5 * torch.einsum('bi,ji,bj->b', r_pre, layer.weight, r_post)
-            self.E -= 0.5 * torch.einsum('bi,ij,bj->b', r_post, layer.weight, r_pre)
+            self.E += 0.5 * torch.einsum('ij,ij->i', r_post, pred)
             self.E -= torch.einsum('i,ji->j', layer.bias, r_post)
 
         if self.c_energy.target is not None:
