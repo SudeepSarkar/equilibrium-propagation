@@ -3,7 +3,7 @@
 # Copyright (c) 2020 Simon Schug, João Sacramento
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to  al
+# of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
@@ -303,8 +303,8 @@ class RestrictedHopfield(EnergyBasedModel):
             if i == 0:
                 self.E += 0.5 * torch.einsum('ij,ij->i', r_pre, r_pre)
 
-            self.E += 0.5 * torch.einsum('ij,ij->i', r_post, r_post)
-            self.E += torch.einsum('ij,ij->i', r_post, pred)
+            self.E += 0.5 * torch.einsum('ij,ij->i', r_pre, self.u[i + 1])
+            self.E -= torch.einsum('ij,ij->i', r_post, pred)
             self.E -= torch.einsum('i,ji->j', self.W[i].bias, r_post)
 
         if self.c_energy.target is not None:
