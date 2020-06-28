@@ -3,7 +3,7 @@
     "beta": 1,
     "c_energy": "squared_error",
     "dataset": "mnist",
-    "dimensions": [784, 1000, 10],
+    "dimensions": [784, 1000, 1000, 1000, 10],
     "dynamics": {
         "dt": 0.1,
         "n_relax": 50,
