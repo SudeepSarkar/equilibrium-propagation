@@ -301,9 +301,9 @@ class RestrictedHopfield(EnergyBasedModel):
             pred = self.W[i](r_pre)
 
             if i == 0:
-                self.E += 0.5 * torch.einsum('ij,ij->i', r_pre, r_pre)
+                self.E += 0.5 * torch.einsum('ij,ij->i', self.u[i], self.u[i])
 
-            self.E += 0.5 * torch.einsum('ij,ij->i', r_post, r_post)
+            self.E += 0.5 * torch.einsum('ij,ij->i', self.u[i + 1], self.u[i + 1])
             self.E -= torch.einsum('ij,ij->i', r_post, pred)
             #self.E -= torch.einsum('i,ji->j', self.W[i].bias, r_post)
 
