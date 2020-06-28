@@ -58,7 +58,6 @@ class EnergyBasedModel(abc.ABC, torch.nn.Module):
         self.u = None
         self.W = torch.nn.ModuleList(
             torch.nn.Linear(dim1, dim2)
-            #torch.nn.Conv2d(1, 1, 3)
             for dim1, dim2 in zip(self.dimensions[:-1], self.dimensions[1:])
         ).to(config.device)
 
@@ -305,7 +304,7 @@ class RestrictedHopfield(EnergyBasedModel):
         #         self.E += 0.5 * torch.einsum('ij,ij->i', self.u[i], self.u[i])
         #
         #     self.E += 0.5 * torch.einsum('ij,ij->i', self.u[i + 1], self.u[i + 1])
-        #     self.E += 0.5 * torch.einsum('ij,ij->i', r_post, pred)
+        #     self.E += torch.einsum('ij,ij->i', r_post, pred)
         #     self.E -= torch.einsum('i,ji->j', self.W[i].bias, r_post)
 
         if self.c_energy.target is not None:
