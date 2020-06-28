@@ -110,7 +110,7 @@ def train(model, train_loader, dynamics, w_optimizer, fast_init):
         x_batch, y_batch = x_batch.to(config.device), y_batch.to(config.device)
 
         # Reinitialize the neural state variables
-        #model.reset_state()
+        model.reset_state()
 
         # Clamp the input to the training sample
         model.clamp_layer(0, x_batch.view(-1, model.dimensions[0]))
